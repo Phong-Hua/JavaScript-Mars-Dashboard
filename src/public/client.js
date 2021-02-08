@@ -85,23 +85,33 @@ const Greeting = (name) => {
 
 /**
  * Pure function that renders conditional rover information.
+ * Higher-order function.
  * @param {*} immutableRover 
  */
 const RoverInfo = (immutableRover) => {
 
     if (immutableRover.isEmpty())
         return '';
-    return `
-        <h3>Rover Information</h3>
-        <ul>
-            <li>Name: ${immutableRover.get('name')}</li>
-            <li>Launch Date: ${immutableRover.get('launchDate')}</li>
-            <li>Landing Date: ${immutableRover.get('landingDate')}</li>
-            <li>Max Date: ${immutableRover.get('maxDate')}</li>            
-            <li>Status: ${immutableRover.get('status')}</li>
-            <li>Total Photos: ${immutableRover.get('totalPhotos')}</li>
-        </ul>
-    `
+    
+    return (function(name, launchDate, landingDate, maxDate, status, totalPhotos){
+        return `
+            <h3>Rover Information</h3>
+            <ul>
+                <li>Name: ${name}</li>
+                <li>Launch Date: ${launchDate}</li>
+                <li>Landing Date: ${landingDate}</li>
+                <li>Max Date: ${maxDate}</li>            
+                <li>Status: ${status}</li>
+                <li>Total Photos: ${totalPhotos}</li>
+            </ul>
+        `
+    })(immutableRover.get('name'), 
+        immutableRover.get('launchDate'), 
+        immutableRover.get('landingDate'),
+        immutableRover.get('maxDate'),
+        immutableRover.get('status'),
+        immutableRover.get('totalPhotos')
+    );
 }
 
 /**

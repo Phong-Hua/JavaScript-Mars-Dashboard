@@ -16,13 +16,12 @@ const updateStore = (store, newState) => {
 }
 
 const render = async (root, state) => {
-    root.innerHTML = App(state, Greeting, RoverComponent, RoverInfo, LatestImage);
+    root.innerHTML = App(state);
 }
 
 
 // create content
-// Higher-order function
-const App = (state, Greeting, RoverComponent, RoverInfo, LatestImage) => {
+const App = (state) => {
     const rovers = state.get('rovers');
     const username = state.getIn(['user', 'name']);
     const roverInfo = state.get('roverInfo');
@@ -33,7 +32,7 @@ const App = (state, Greeting, RoverComponent, RoverInfo, LatestImage) => {
         <main>
             ${Greeting(username)}
             <section>
-                ${RoverComponent(rovers, handleRoverChange)}
+                ${roverComponent(rovers, handleRoverChange)}
             </section>
             <section>
                 ${RoverInfo(roverInfo)}
@@ -46,13 +45,11 @@ const App = (state, Greeting, RoverComponent, RoverInfo, LatestImage) => {
     `
 }
 
-
 /**
- * Higher order function take handleRoverChange as an argument.
- * Also, this is pure function.
+ * Pure function that return a selection of rover
  * @param {*} rover 
  */
-const RoverComponent = (rovers, handleRoverChange) => {
+const roverComponent = (rovers, handleRoverChange) => {
     return `
         <label>Choose a rover</label>
         <select name="rovers" id="rovers" style="width: 200px; height: 30px;" onChange="(${handleRoverChange})(this.value)">
@@ -120,7 +117,7 @@ const LatestImage = (immutablePhotos) => {
 
 
 const handleRoverChange = (rover) => {
-    return loadData (store, rover);
+    loadData (store, rover);
 }
 
 const loadData = async (store, name) => {
@@ -132,11 +129,6 @@ const loadData = async (store, name) => {
 
 // ------------------------------------------------------  API CALLS
 
-/**
- * Higher order function
- * @param {*} rover 
- * @param {*} earthdate 
- */
 const loadImage = (rover, earthdate) => {
     return fetch(`http://localhost:3000/latest_photos/${rover}/${earthdate}`)
     .then(res => res.json())
@@ -149,10 +141,6 @@ const convertImageData = ({photos}) => {
     return []
 }
 
-/**
- * Higher order function
- * @param {*} name 
- */
 const getRoverInfo = (name) => {
     return fetch(`http://localhost:3000/rovers/${name}`)
     .then(res => res.json())
@@ -171,3 +159,4 @@ const convertRoverData = (data) => {
     }
     return rover;
 }
+

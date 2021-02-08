@@ -106,16 +106,19 @@ const RoverInfo = (immutableRover) => {
 
 /**
  * Pure function that render conditional photos. 
+ * Higher order function.
  * @param {*} immutablePhotos 
  */
 const LatestImage = (immutablePhotos) => {
     if (immutablePhotos.isEmpty())
         return '';
     const photos = immutablePhotos.map(photo => `<img src=${photo} style="margin:10px;" />`);
-    return `
-        <h3>Latest Image</h3>
-        ${photos.join('')}
-    `
+    return ((photos) => {
+        return `
+            <h3>Latest Image</h3>
+            ${photos.join('')}
+        `
+    })(photos);
 }
 
 

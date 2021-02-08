@@ -122,7 +122,7 @@ const RoverInfo = (immutableRover) => {
 const LatestImage = (immutablePhotos) => {
     if (immutablePhotos.isEmpty())
         return '';
-    const photos = immutablePhotos.map(photo => `<img src=${photo} style="margin:10px;" />`);
+    const photos = immutablePhotos.map(photo => RenderImage(photo));
     return ((photos) => {
         return `
             <h3>Latest Image</h3>
@@ -131,6 +131,11 @@ const LatestImage = (immutablePhotos) => {
     })(photos);
 }
 
+const RenderImage = (photo) => {
+    return `
+        <img src=${photo} style="display:block; margin-top: 5px; margin-bottom: 5px; margin-left:auto; margin-right:auto; max-width: 80%" />
+    `
+}
 
 const handleRoverChange = (rover) => {
     return loadData (store, rover);
